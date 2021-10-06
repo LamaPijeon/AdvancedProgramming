@@ -4,27 +4,33 @@ from getpass import getpass
 import time
 
 def attackSpace(space, playerBoard, playerHit):
-    removeHit(playerHit, space)
     space = str(space)
     letter = str(space[0]).upper()
     number = str(space)[1]
     space = letter+number
     playerBoardNums = playerBoard[1]
     playboardLetts = playerBoard[0]
+    hit = False
     for x in range(0,len(playerBoard[0])):
         if playboardLetts[x] == letter:
             if str(playerBoardNums[x]) == str(number):
-                ifHit(playerBoard, x, space)
+                hit = ifHit(playerBoard, x, space, playerHit)
                 break
+    if hit != True:
+        removeHit(playerHit, space, False)
 
-def removeHit(playhit, space):
+def removeHit(playhit, space, ifHit):
     space = str(space)
     letter = str(space[0]).lower()
     number = str(space)[1]
     letterLocation = ord(letter)-96
 
-    playhit[int(number)].pop(int(letterLocation))
-    playhit[int(number)].insert(int(letterLocation),"x")
+    if ifHit == True:
+        playhit[int(number)].pop(int(letterLocation))
+        playhit[int(number)].insert(int(letterLocation),"x")
+    elif ifHit == False:
+        playhit[int(number)].pop(int(letterLocation))
+        playhit[int(number)].insert(int(letterLocation),"°")
 
     for x in range(0,6):
         if x == 0:
@@ -32,12 +38,15 @@ def removeHit(playhit, space):
         else:
             print(playhit[0][x],playhit[1][x],playhit[2][x],playhit[3][x],playhit[4][x],playhit[5][x])
 
-def ifHit(board, location, space):
+def ifHit(board, location, space, playerHit):
     print("Congrats. ",space," was a hit")
     board[0].pop(location)
     board[0].insert(location,"*")
     board[1].pop(location)
     board[1].insert(location, "*")
+    removeHit(playerHit, space, True)
+    return True
+
 
 player1Board = [["","","","",""],["","","","",""]]
 player2Board = [["","","","",""],["","","","",""]]
@@ -49,10 +58,11 @@ print()
 
 for x in range(0,5):
     count += 1
-    print("what's the letter of the ",count," place? Press enter after entered.")
-    letter = input("A-E:   ").upper()
-    print("what's the number of the ",count," place? Press enter after entered.")
-    number = input("1-5:   ").lower()
+    print("what's the space of the ",count," place? Press enter after entered.")
+    space = str(input("Space:   ")).upper()
+    letter = str(space[0]).upper()
+    number = str(space)[1]
+    space = letter+number
     player1Board[0].insert(count-1,letter)
     player1Board[1].insert(count-1,number)
     print()
@@ -69,10 +79,11 @@ os.system('clear')
 count = 0
 for x in range(0,5):
     count += 1
-    print("what's the letter of the ",count," place? Press enter after entered.")
-    letter = input("A-E:   ").upper()
-    print("what's the number of the ",count," place? Press enter after entered.")
-    number = input("1-5:   ").lower()
+    print("what's the space of the ",count," place? Press enter after entered.")
+    space = str(input("Space:   ")).upper()
+    letter = str(space[0]).upper()
+    number = str(space)[1]
+    space = letter+number
     player2Board[0].insert(count-1,letter)
     player2Board[1].insert(count-1,number)
     print()
