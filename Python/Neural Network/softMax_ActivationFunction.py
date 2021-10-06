@@ -1,19 +1,21 @@
-import math
+import numpy as np 
+import nnfs
 
-layerOutputs = [4.8, 1.21, 2.385]
+nnfs.init()
 
-# E = 2.71828182846
-E = math.e
+layerOutputs = [[4.8, 1.21, 2.385],
+                [8.9, -1.81, 0.2],
+                [1.41, 1.051, 0.026]]
 
-expValues = []
+expValues = np.exp(layerOutputs)
 
-for outputs in layerOutputs:
-    expValues.append(E**outputs)
+# print(expValues)
 
-print(expValues)
+# normBase = sum(expValues)
 
-normBase = sum(expValues)
-normValues = []
+# print(np.sum(layerOutputs, axis = 1, keepdims=True))
 
-for value in expValues:
-    normValues.append
+normValues = expValues / np.sum(expValues, axis = 1, keepdims = True)
+
+print(normValues)
+# print(sum(normValues))
