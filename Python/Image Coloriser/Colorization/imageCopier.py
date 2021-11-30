@@ -6,7 +6,6 @@ import numpy as np
 
 imagesDone = 0
 def getImages(image, fileType, path):
-    global imagesDone
     name = image[image.rfind('/')+1:image.rfind('.')]+'-Color'+fileType
     imageColor = cv.imread(image, cv.IMREAD_COLOR)
     cv.imwrite(path+'/' + name, imageColor)
@@ -14,13 +13,11 @@ def getImages(image, fileType, path):
     name = image[image.rfind('/')+1:image.rfind('.')]+'-Gray'+fileType
     imagePath = cv.imread(image, cv.IMREAD_GRAYSCALE)
     cv.imwrite(path+'/' + name, imagePath)
-   
-    imagesDone += 1
-    print()
-    print(imagesDone)
+
     return imageColor
 
 def getFolder(image, parent):
+    global imagesDone
     global possibleValues 
     imagePath = os.path.join(parent, image)
     fileType = imagePath[imagePath.rfind('.'):]
@@ -32,6 +29,10 @@ def getFolder(image, parent):
 
         imLab = cv.cvtColor(imColor, cv.COLOR_BGR2Lab)
         l,a,b = cv.split(imLab)
+   
+        imagesDone += 1
+        print()
+        print(imagesDone)
 
         os.remove(imagePath)
 
@@ -61,6 +62,6 @@ possibleValues = ['.jpg',
                   '.pic']
 
 for image in imageList:
-    print(image)
+    # print(image)
     getFolder(image, parentDir)
     # imageList.remove(image)
