@@ -100,7 +100,7 @@ player1Hits = [["","A","B","C","D","E"],["1","o","o","o","o","o"],["2","o","o","
 player2Hits = [["","A","B","C","D","E"],["1","o","o","o","o","o"],["2","o","o","o","o","o"],["3","o","o","o","o","o"],["4","o","o","o","o","o"],["5","o","o","o","o","o"]]
 turn = 1
 
-while ("1" in player1Board[1] or "2" in player1Board[1] or "3" in player1Board[1] or "4" in player1Board[1] or "5" in player1Board[1]) and ("1" in player2Board[1] or "2" in player2Board[1] or "3" in player2Board[1] or "4" in player2Board[1] or "5" in player2Board[1]):
+while ("1" in player1Board[0] or "2" in player1Board[0] or "3" in player1Board[0] or "4" in player1Board[0] or "5" in player1Board[0]) and ("1" in player2Board[0] or "2" in player2Board[0] or "3" in player2Board[0] or "4" in player2Board[0] or "5" in player2Board[0]):
     
     if turn == 1: 
         locationHit = input("Where is the location to hit (i.e: A3) :  ")

@@ -1,9 +1,8 @@
 import numpy as np
 import nnfs
-from nnfs.datasets import spiral_data
+from nnfs.datasets import spiral_data, vertical_data
 
 nnfs.init()
-
 
 class LayerDense:
     def __init__ (self, nInputs, nNeurons):
@@ -40,9 +39,7 @@ class LossCatagoricalCrossentropy(Loss):
             # one-hot encoding
             correctConfidences = np.sum(yPredClipped * yTrue, axis = 1)
         negativeLogLikleyhoods = -np.log(correctConfidences)
-        return negativeLogLikleyhoods
-            
-
+        return negativeLogLikleyhoods            
 
 X, y = spiral_data(samples = 100, classes = 3)
 
