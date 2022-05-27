@@ -1,44 +1,40 @@
 import os
 import cv2 as cv
-import numpy as np
-# import matplotlib as mplot
-# import ntpath
 
+dash = "/"
 imagesDone = 0
+
 def getImages(image, fileType, path):
     name = image[image.rfind('/')+1:image.rfind('.')]+'-Color'+fileType
     imageColor = cv.imread(image, cv.IMREAD_COLOR)
-    cv.imwrite(path+'/' + name, imageColor)
+    pathImage = path+'/'+name
+    cv.imwrite(pathImage, imageColor)
 
-    name = image[image.rfind('/')+1:image.rfind('.')]+'-Gray'+fileType
-    imagePath = cv.imread(image, cv.IMREAD_GRAYSCALE)
-    cv.imwrite(path+'/' + name, imagePath)
+#   We won't make gray images since it takes up a lot of space and it can just be done in the second code
+    # name = image[image.rfind('/')+1:image.rfind('.')]+'-Gray'+fileType
+    # imagePath = cv.imread(image, cv.IMREAD_GRAYSCALE)
+    # cv.imwrite(path+'/' + name, imagePath)
 
-    return imageColor
+    # return imageColor
 
 def getFolder(image, parent):
     global imagesDone
     global possibleValues 
     imagePath = os.path.join(parent, image)
-    fileType = imagePath[imagePath.rfind('.'):]
+    fileType = imagePath[imagePath.rfind('.'):].lower()
     if image != '.DS_Store' and fileType in possibleValues:
         path = imagePath + "_f"
-        os.mkdir(path)
-        getImages(imagePath, fileType, path)
-        imColor = getImages(imagePath, fileType, path)
+        if os.path.exists(path) == False:
+            os.mkdir(path)
+            getImages(imagePath, fileType, path)
+            imagesDone += 1
+            print()
+            print(imagesDone)
 
-        imLab = cv.cvtColor(imColor, cv.COLOR_BGR2Lab)
-        l,a,b = cv.split(imLab)
-   
-        imagesDone += 1
-        print()
-        print(imagesDone)
-
-        os.remove(imagePath)
-
+            os.remove(imagePath)
 # Parent Directory path
-parentDir = "/Users/24nowak_p/Desktop/School/Programming/Programming Class/AdvancedProgramming/Python/Image Coloriser/Images/"
-imageList = next(os.walk(parentDir))[2]
+parentDir = "/Volumes/Tech 1/tiny-imagenet-200/train"
+parent_folderList = next(os.walk(parentDir))[1]
 possibleValues = ['.jpg', 
                   '.jpeg', 
                   '.png', 
@@ -61,7 +57,14 @@ possibleValues = ['.jpg',
                   '.hdr', 
                   '.pic']
 
-for image in imageList:
-    # print(image)
-    getFolder(image, parentDir)
-    # imageList.remove(image)
+# Accessing all the images in the Training folder by entering each folders folder.
+for x in parent_folderList:
+    folder = parentDir + "/" +  x
+    child_folderList = next(os.walk(folder))[1]
+    for y in child_folderList:
+        imageFolder = folder+dash+y+dash
+        images_Folder = next(os.walk(imageFolder))[2]
+        for z in images_Folder:
+            imagePath = imageFolder+z
+            getFolder(imagePath, imageFolder)
+            # print(z)
